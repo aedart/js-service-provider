@@ -1,5 +1,39 @@
 'use strict';
 
+import ServiceProvider from './ServiceProvider';
+
+/**
+ * ioc symbol
+ *
+ * @type {Symbol}
+ * @private
+ */
+const _ioc = Symbol('ioc');
+
+/**
+ * has Booted symbol
+ *
+ * @type {Symbol}
+ * @private
+ */
+const _hasBooted = Symbol('has-booted');
+
+/**
+ * booted Providers symbol
+ *
+ * @type {Symbol}
+ * @private
+ */
+const _bootedProviders = Symbol('booted-providers');
+
+/**
+ * providers symbol
+ *
+ * @type {Symbol}
+ * @private
+ */
+const _providers = Symbol('providers');
+
 /**
  * Registrar
  *
@@ -10,65 +44,190 @@
 class Registrar {
 
     /**
+     * Creates a new Registrar instance
+     *
+     * @param {Container|Object} ioc
+     */
+    constructor(ioc){
+        this.ioc = ioc;
+        this.hasBooted = false;
+        this.bootedProviders = new WeakSet();
+    }
+
+    /**
+     * Set ioc
+     *
+     * @param {Container|Object} instance IoC Service Container
+     */
+    set ioc(instance) {
+        this[_ioc] = instance;
+    }
+
+    /**
+     * Get ioc
+     *
+     * @return {Container|Object} IoC Service Container
+     */
+    get ioc() {
+        return this[_ioc];
+    }
+
+    /**
+     * Set has Booted
+     *
+     * @see bootProviders()
+     *
+     * @param {boolean} hasBooted True if registrar has booted it's providers, false if not
+     */
+    set hasBooted(hasBooted) {
+        this[_hasBooted] = hasBooted;
+    }
+
+    /**
+     * Get has Booted
+     *
+     * @see bootProviders()
+     *
+     * @return {boolean} True if registrar has booted it's providers, false if not
+     */
+    get hasBooted() {
+        return this[_hasBooted];
+    }
+
+    /**
+     * Set providers
+     *
+     * @param {Array.<ServiceProvider>} list List of providers
+     */
+    set providers(list) {
+        this[_providers] = list;
+    }
+
+    /**
+     * Get providers
+     *
+     * @return {Array.<ServiceProvider>} List of providers
+     */
+    get providers() {
+        return this[_providers];
+    }
+
+    /**
+     * Set booted Providers
+     *
+     * @param {WeakSet} bootedProviders Set of booted providers
+     */
+    set bootedProviders(bootedProviders) {
+        this[_bootedProviders] = bootedProviders;
+    }
+
+    /**
+     * Get booted Providers
+     *
+     * @return {WeakSet} Set of booted providers
+     */
+    get bootedProviders() {
+        return this[_bootedProviders];
+    }
+
+    /**
      * Register a service provider
      *
-     * If this registrar has booted previous providers, the given provider
-     * will automatically be booted
+     * Method will invoke "register" method on provider
      *
      * @param {ServiceProvider|function} provider Instance of service provider or function which will be newed up
-     * @param {boolean} [force] If true, provider's "register" method will be triggered
      * @param {boolean} [boot] If true, provider's "boot" method will be triggered.
-     *                         APPLIES ONLY if "force" is true.
      *
      * @return {ServiceProvider} The booted provider instance
      */
-    register(provider, force = false, boot = false){}
+    register(provider, boot = true){
+        // New up the service provider, if not already an instance
+        if( ! (provider instanceof ServiceProvider)){
+            provider = new provider(this.ioc);
+        }
+
+        // Invoke register
+        provider.register();
+
+        // Boot if needed
+        if(boot){
+            this.bootedProviders.add(provider.boot());
+        }
+
+        // Add provider to list of providers
+        this.providers[this.providers.length] = provider;
+
+        // Finally, return the registered instance
+        return provider;
+    }
 
     /**
      * Register a collection of service providers
      *
-     * If this registrar has booted previous providers, the given provider
-     * will automatically be booted
-     *
      * @param {Array<ServiceProvider|function>} providers Instances of service provider or functions which will be newed up
-     * @param {boolean} [force]     If true, provider's "register" method will be triggered
+     * @param {boolean} [boot] If true, provider's "boot" method will be triggered.
      * @param {boolean} [delayBoot] If true, all providers are registered first and only then are booted.
-     *                              APPLIES ONLY registrar has booted previous providers. If false, then
+     *                              APPLIES ONLY if "boot" is set to true. If false, then
      *                              each given provider is booted as soon as it has been registered.
      *
      * @return {void}
      */
-    registerProviders(providers, force = false, delayBoot = true){}
+    registerProviders(providers, boot = true, delayBoot = true){
+        // Determine if each provider should boot individually
+        // while it is being registered
+        let bootIndividually = (boot && !delayBoot);
 
-    /**
-     * Check if given provider has been registered
-     *
-     * @param {ServiceProvider|function} provider
-     *
-     * @return {boolean}
-     */
-    hasRegistered(provider){}
+        // List of providers that eventually need to be booted
+        let providersToBoot = [];
+
+        // Register each provider
+        let len = providers.length;
+        for(let i = 0; i < len; i++){
+            providersToBoot[providersToBoot.length] = this.register(providers[i], bootIndividually);
+        }
+
+        // If we do not need to perform delayed boot of providers,
+        // e.g. if all have been booted individually and no delayed
+        // boot is requested, then we stop here.
+        if( ! delayBoot || bootIndividually){
+            return;
+        }
+
+        // Boot the providers
+        this._bootProviders(providersToBoot);
+    }
 
     /**
      * Boot all registered service providers
      *
-     * Method will invoke "register" on all providers that have
-     * yet to register their services.
+     * Method will invoke "boot" on all providers that
+     * have yet not booted.
      *
-     * Method will invoke "boot" on all providers.
+     * @see Registrar.bootedProviders
      *
      * @return {void}
      */
-    bootProviders(){}
+    bootProviders(){
+        let providersToBoot = this.providers.filter((provider) => {
+            return ( ! this.bootedProviders.has(provider));
+        });
+
+        this._bootProviders(providersToBoot);
+    }
 
     /**
-     * Check if registrar has booted it's providers
+     * Boot the given providers
      *
-     * @see bootProviders()
-     *
-     * @return {boolean}
+     * @param {Array.<ServiceProvider>} providers
+     * @private
      */
-    hasBooted(){}
+    _bootProviders(providers){
+        let len = providers.length;
+
+        for(let i = 0; i < len; i++){
+            this.bootedProviders.add(providers[i].boot());
+        }
+    }
 }
 
 export default Registrar;
