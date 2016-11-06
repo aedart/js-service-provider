@@ -1,6 +1,7 @@
 'use strict';
 
 import ServiceProvider from './../../src/ServiceProvider';
+import Registrar from '../../src/Registrar';
 import DummyServiceProvider from './DummyServiceProvider';
 import IoC from '@aedart/js-ioc';
 
@@ -14,7 +15,7 @@ class TestHelper {
     /**
      * Returns a new dummy service provider instance
      *
-     * @param {Container|Object} ioc
+     * @param {Container|Object} [ioc]
      *
      * @return {DummyServiceProvider}
      */
@@ -29,6 +30,17 @@ class TestHelper {
      */
     static get ioc(){
         return IoC;
+    }
+
+    /**
+     * Returns a new Registrar instance
+     *
+     * @param {Container|Object} [ioc]
+     *
+     * @return {Registrar}
+     */
+    static makeRegistrar(ioc = {}){
+        return new Registrar(ioc);
     }
 }
 
