@@ -24,6 +24,17 @@ class TestHelper {
     }
 
     /**
+     * Returns reference to a dummy service provider
+     *
+     * (Not instantiated)
+     *
+     * @return {DummyServiceProvider|function}
+     */
+    static getDummyServiceProvider(){
+        return DummyServiceProvider;
+    }
+
+    /**
      * Returns the IoC instance
      *
      * @return {Container}
