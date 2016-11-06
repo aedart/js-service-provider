@@ -18,7 +18,7 @@ class TestHelper {
      *
      * @return {DummyServiceProvider}
      */
-    static makeDymmyServiceProvider(ioc = {}){
+    static makeDummyServiceProvider(ioc = {}){
         return new DummyServiceProvider(ioc);
     }
 

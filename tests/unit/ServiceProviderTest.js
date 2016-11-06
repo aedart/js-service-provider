@@ -15,7 +15,7 @@ describe('Service Provider', function(){
 
     it('can set and get ioc instance', function () {
         let ioc = TestHelper.ioc;
-        let provider = TestHelper.makeDymmyServiceProvider(ioc);
+        let provider = TestHelper.makeDummyServiceProvider(ioc);
 
         expect(provider.ioc).toBe(ioc);
     });
