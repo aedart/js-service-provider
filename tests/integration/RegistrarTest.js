@@ -2,7 +2,7 @@
 
 import TestHelper from '../helpers/TestHelper';
 
-fdescribe('Registrar', function (){
+describe('Registrar', function (){
 
     it('can create instance', function () {
         let registrar = TestHelper.makeRegistrar();
