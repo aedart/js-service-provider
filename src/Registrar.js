@@ -50,6 +50,7 @@ class Registrar {
      */
     constructor(ioc){
         this.ioc = ioc;
+        this.providers = [];
         this.hasBooted = false;
         this.bootedProviders = new WeakSet();
     }
@@ -151,7 +152,8 @@ class Registrar {
 
         // Boot if needed
         if(boot){
-            this.bootedProviders.add(provider.boot());
+            provider.boot();
+            this.bootedProviders.add(provider);
         }
 
         // Add provider to list of providers
@@ -225,7 +227,10 @@ class Registrar {
         let len = providers.length;
 
         for(let i = 0; i < len; i++){
-            this.bootedProviders.add(providers[i].boot());
+            let provider = providers[i];
+            provider.boot();
+
+            this.bootedProviders.add(provider);
         }
     }
 }
