@@ -3,6 +3,7 @@
 import ServiceProvider from './../../src/ServiceProvider';
 import Registrar from '../../src/Registrar';
 import DummyServiceProvider from './DummyServiceProvider';
+import DummyAggregateProvider from './DummyAggregateProvider';
 import IoC from '@aedart/js-ioc';
 
 /**
@@ -32,6 +33,18 @@ class TestHelper {
      */
     static getDummyServiceProvider(){
         return DummyServiceProvider;
+    }
+
+    /**
+     * Returns a new dummy aggregate provider instance
+     *
+     * @param {Container|object} ioc
+     * @param {Array.<ServiceProvider|function>} [providers]
+     *
+     * @return {DummyAggregateProvider}
+     */
+    static makeDummyAggregateProvider(ioc = {}, providers = []){
+        return new DummyAggregateProvider(ioc, providers);
     }
 
     /**
