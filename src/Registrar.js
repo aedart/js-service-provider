@@ -179,8 +179,6 @@ class Registrar {
         // while it is being registered
         let bootIndividually = (boot && !delayBoot);
 
-        console.log('Should boot individually', bootIndividually);
-
         // List of providers that eventually need to be booted
         let providersToBoot = [];
 
