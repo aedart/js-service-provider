@@ -215,14 +215,15 @@ class Registrar {
     bootProviders(providers = null, force = false){
         let providersToBoot = providers;
 
+        // Default to registered providers if no providers given
         if(providersToBoot === null){
             providersToBoot = this.providers.filter((provider) => {
                 return ( ! this.bootedProviders.has(provider));
             });
         }
 
+        // Boot operation...
         let len = providersToBoot.length;
-
         for(let i = 0; i < len; i++){
             let provider = providersToBoot[i];
 
