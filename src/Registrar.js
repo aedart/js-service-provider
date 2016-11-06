@@ -152,8 +152,7 @@ class Registrar {
 
         // Boot if needed
         if(boot){
-            provider.boot();
-            this.bootedProviders.add(provider);
+            this.bootProviders([provider]);
         }
 
         // Add provider to list of providers
@@ -196,7 +195,7 @@ class Registrar {
         }
 
         // Boot the providers
-        this._bootProviders(providersToBoot);
+        this.bootProviders(providersToBoot);
     }
 
     /**
@@ -207,30 +206,31 @@ class Registrar {
      *
      * @see Registrar.bootedProviders
      *
+     * @param {Array.<ServiceProvider>|null} [providers] If null given, method will default to registered providers
+     * @param {boolean} [force] If true, providers are booted no matter what. If false, then providers are only
+     *                          booted if not already booted.
+     *
      * @return {void}
      */
-    bootProviders(){
-        let providersToBoot = this.providers.filter((provider) => {
-            return ( ! this.bootedProviders.has(provider));
-        });
+    bootProviders(providers = null, force = false){
+        let providersToBoot = providers;
 
-        this._bootProviders(providersToBoot);
-    }
+        if(providersToBoot === null){
+            providersToBoot = this.providers.filter((provider) => {
+                return ( ! this.bootedProviders.has(provider));
+            });
+        }
 
-    /**
-     * Boot the given providers
-     *
-     * @param {Array.<ServiceProvider>} providers
-     * @private
-     */
-    _bootProviders(providers){
-        let len = providers.length;
+        let len = providersToBoot.length;
 
         for(let i = 0; i < len; i++){
-            let provider = providers[i];
-            provider.boot();
+            let provider = providersToBoot[i];
 
-            this.bootedProviders.add(provider);
+            // Boot only if not already booted - or if forced
+            if(force || ! this.bootedProviders.has(provider)){
+                provider.boot();
+                this.bootedProviders.add(provider);
+            }
         }
     }
 }
