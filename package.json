@@ -1,7 +1,7 @@
 {
   "name": "@aedart/js-service-provider",
   "version": "0.9.0",
-  "description": "EXPERIMENT",
+  "description": "Service Provider where you can register your IoC bindings",
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/.bin/karma start karma.conf.js"
