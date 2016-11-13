@@ -110,6 +110,7 @@ module.exports = function (config) {
                     ]
                 }),
                 babel({
+                    include: 'node_modules/@aedart/**',
                     exclude: 'node_modules/**'
                 }),
                 replace({
