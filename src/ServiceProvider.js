@@ -1,19 +1,14 @@
 'use strict';
 
-/**
- * ioc symbol
- *
- * @type {Symbol}
- * @private
- */
-const _ioc = Symbol('ioc');
+import IoCAware from './Mixins/IoCAware';
+import { mix } from 'mixwith/src/mixwith';
 
 /**
  * Abstract Service Provider
  *
  * @author Alin Eugen Deac <aedart@gmail.com>
  */
-class ServiceProvider {
+class ServiceProvider extends mix(Object).with( IoCAware ){
 
     /**
      * Create new service container instance
@@ -23,29 +18,13 @@ class ServiceProvider {
      * @throws {TypeError} Abstract class
      */
     constructor(ioc){
+        super();
+
         if(new.target === ServiceProvider){
             throw new TypeError('Cannot create Service Provider instance, class is abstract');
         }
 
         this.ioc = ioc;
-    }
-
-    /**
-     * Set ioc
-     *
-     * @param {Container|Object} instance IoC Service Container
-     */
-    set ioc(instance) {
-        this[_ioc] = instance;
-    }
-
-    /**
-     * Get ioc
-     *
-     * @return {Container|Object} IoC Service Container
-     */
-    get ioc() {
-        return this[_ioc];
     }
 
     /**
