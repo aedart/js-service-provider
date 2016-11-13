@@ -20,6 +20,9 @@ export { REGISTRAR_CLASS };
 import RegistrarAware from './src/Mixins/RegistrarAware';
 export { RegistrarAware };
 
+import IoCAware from './src/Mixins/IoCAware';
+export { IoCAware };
+
 // Facades
 import IoCFacade from './src/Facades/IoCFacade';
 export { IoCFacade };
