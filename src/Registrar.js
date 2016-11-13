@@ -1,14 +1,8 @@
 'use strict';
 
 import ServiceProvider from './ServiceProvider';
-
-/**
- * ioc symbol
- *
- * @type {Symbol}
- * @private
- */
-const _ioc = Symbol('ioc');
+import IoCAware from './Mixins/IoCAware';
+import { mix } from 'mixwith/src/mixwith';
 
 /**
  * has Booted symbol
@@ -41,7 +35,7 @@ const _providers = Symbol('providers');
  *
  * @author Alin Eugen Deac <aedart@gmail.com>
  */
-class Registrar {
+class Registrar extends mix(Object).with( IoCAware ){
 
     /**
      * Creates a new Registrar instance
@@ -49,28 +43,12 @@ class Registrar {
      * @param {Container|Object} ioc
      */
     constructor(ioc){
+        super();
+
         this.ioc = ioc;
         this.providers = [];
         this.hasBooted = false;
         this.bootedProviders = new WeakSet();
-    }
-
-    /**
-     * Set ioc
-     *
-     * @param {Container|Object} instance IoC Service Container
-     */
-    set ioc(instance) {
-        this[_ioc] = instance;
-    }
-
-    /**
-     * Get ioc
-     *
-     * @return {Container|Object} IoC Service Container
-     */
-    get ioc() {
-        return this[_ioc];
     }
 
     /**
