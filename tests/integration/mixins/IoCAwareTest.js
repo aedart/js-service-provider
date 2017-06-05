@@ -4,7 +4,7 @@ import IoCAware from '../../../src/Mixins/IoCAware';
 import TestHelper from '../../helpers/TestHelper';
 import Facade from '@aedart/js-facade';
 import IoC from '@aedart/js-ioc';
-import { mix } from 'mixwith/src/mixwith';
+import mix from '@vcas/js-mixin';
 
 describe('IoC Aware Mixin', function(){
 

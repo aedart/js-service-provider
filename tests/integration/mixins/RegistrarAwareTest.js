@@ -5,7 +5,7 @@ import RegistrarServiceProvider from '../../../src/Providers/RegistrarServicePro
 import TestHelper from '../../helpers/TestHelper';
 import Facade from '@aedart/js-facade';
 import IoC from '@aedart/js-ioc';
-import { mix } from 'mixwith/src/mixwith';
+import mix from '@vcas/js-mixin';
 
 describe('Registrar Aware Mixin', function(){
 

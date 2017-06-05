@@ -1,14 +1,14 @@
 'use strict';
 
 import IoCAware from './Mixins/IoCAware';
-import { mix } from 'mixwith/src/mixwith';
+import mix from '@vcas/js-mixin';
 
 /**
  * Abstract Service Provider
  *
  * @author Alin Eugen Deac <aedart@gmail.com>
  */
-class ServiceProvider extends mix(Object).with( IoCAware ){
+class ServiceProvider extends mix(class {}).with( IoCAware ){
 
     /**
      * Create new service container instance
