@@ -3,9 +3,6 @@
   "version": "1.1.0",
   "description": "Service Provider where you can register your IoC bindings",
   "main": "index.js",
-  "scripts": {
-    "test": "./node_modules/.bin/karma start karma.conf.js"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/aedart/js-service-provider.git"
@@ -25,10 +22,10 @@
   "homepage": "https://github.com/aedart/js-facade#readme",
   "dependencies": {
     "@aedart/js-facade": "^1.0.0",
-    "mixwith": "~0.1"
+    "@vcas/js-mixin": "~1.0"
   },
   "devDependencies": {
-    "@aedart/js-ioc": "^1.0.0",
+    "@aedart/js-ioc": "^1.2.0",
     "babel-plugin-external-helpers": "^6.18.0",
     "babel-plugin-transform-builtin-extend": "^1.1.0",
     "babel-preset-es2015-rollup": "^1.2.0",
@@ -54,5 +51,8 @@
     "rollup-plugin-replace": "^1.1.1",
     "rollup-plugin-uglify": "^1.0.1",
     "uglify-js-harmony": "^2.6.2"
+  },
+  "scripts": {
+    "test": "./node_modules/.bin/karma start karma.conf.js"
   }
 }
