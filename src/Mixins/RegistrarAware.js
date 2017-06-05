@@ -2,7 +2,7 @@
 
 import IoCFacade from './../Facades/IoCFacade';
 import { REGISTRAR_CLASS } from './../Providers/RegistrarServiceProvider';
-import { Mixin } from 'mixwith/src/mixwith';
+import {DeclareMixin} from '@vcas/js-mixin';
 
 /**
  * registrar symbol
@@ -17,7 +17,7 @@ const _registrar = Symbol('registrar');
  *
  * @return {RegistrarAware}
  */
-export default Mixin((superClass) => class RegistrarAware extends superClass {
+export default DeclareMixin((superClass) => class RegistrarAware extends superClass {
 
     /**
      * Set registrar

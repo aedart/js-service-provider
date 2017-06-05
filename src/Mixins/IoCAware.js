@@ -1,7 +1,7 @@
 'use strict';
 
 import IoCFacade from './../Facades/IoCFacade';
-import {Mixin} from 'mixwith/src/mixwith';
+import {DeclareMixin} from '@vcas/js-mixin';
 
 /**
  * ioc symbol
@@ -16,7 +16,7 @@ const _ioc = Symbol('ioc');
  *
  * @return {IoCAware}
  */
-export default Mixin((superClass) => class IoCAware extends superClass {
+export default DeclareMixin((superClass) => class IoCAware extends superClass {
 
     /**
      * Set ioc
