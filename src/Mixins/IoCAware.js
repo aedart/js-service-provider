@@ -1,7 +1,7 @@
 'use strict';
 
 import IoCFacade from './../Facades/IoCFacade';
-import {DeclareMixin} from '@vcas/js-mixin';
+import {DeclareMixin} from '@vestergaard-company/js-mixin';
 
 /**
  * ioc symbol

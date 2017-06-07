@@ -2,7 +2,7 @@
 
 import IoCFacade from './../Facades/IoCFacade';
 import { REGISTRAR_CLASS } from './../Providers/RegistrarServiceProvider';
-import {DeclareMixin} from '@vcas/js-mixin';
+import {DeclareMixin} from '@vestergaard-company/js-mixin';
 
 /**
  * registrar symbol

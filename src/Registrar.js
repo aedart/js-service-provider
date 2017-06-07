@@ -2,7 +2,7 @@
 
 import ServiceProvider from './ServiceProvider';
 import IoCAware from './Mixins/IoCAware';
-import mix from '@vcas/js-mixin';
+import mix from '@vestergaard-company/js-mixin';
 
 /**
  * has Booted symbol

@@ -2,7 +2,7 @@
 
 import ServiceProvider from './ServiceProvider';
 import RegistrarAware from './Mixins/RegistrarAware';
-import mix from '@vcas/js-mixin';
+import mix from '@vestergaard-company/js-mixin';
 
 /**
  * providers symbol
